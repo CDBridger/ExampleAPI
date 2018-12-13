@@ -1,3 +1,1 @@
-Cpp console app and C# console app both using ExampleAPI c++ dll
-
-TODO: Fix passing collection of vectors to API
+Cpp console app and C# console app both using ExampleAPI c++ dll (with a P/Invoke wrapper between c# console and Example API)
