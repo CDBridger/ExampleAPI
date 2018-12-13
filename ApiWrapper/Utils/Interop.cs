@@ -13,6 +13,15 @@ namespace ApiWrapper.Utils
 
     public static class Interop
     {
+        /// <summary>
+        /// Make an unmanaged array from a managed collection. Items in the collection require a 
+        /// backing field which has the correctly Marshalled primitive values. Therefore
+        /// an interface has been enforced that all items must follow, see <see cref="IMarshallable{K}"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type that will be returned in the collection, must have the backing field of type K</typeparam>
+        /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
+        /// <param name="collection">The collection that will be Marshalled to unmanaged code.</param>
+        /// <returns>A pointer bundle which points to the memory address of the unmanaged code and the size of the array</returns>
         public static PtrBundle MakeUnmanagedArray<T, K>(IEnumerable<T> collection) where T : IMarshallable<K>
         {
             var sending = collection.Select(s => s.BackingField).ToArray();
