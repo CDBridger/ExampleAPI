@@ -39,7 +39,7 @@ public:
 extern "C" {
 	MYAPI Vector3C * CreateVector3();
 	MYAPI Vector3C * CreateVector3Args(float x, float y, float z);
-	//MYAPI void DeleteVector3(Vector3C * handler);
+	MYAPI void DeleteVector3(Vector3C * handler);
 	MYAPI float GetX(Vector3C * handler);
 	MYAPI void SetX(Vector3C * handler, float val);
 	MYAPI float GetY(Vector3C * handler);
