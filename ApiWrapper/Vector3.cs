@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ApiWrapper.Utils;
+using System;
 using System.Runtime.InteropServices;
 
 namespace ApiWrapper
 {
-    public partial class Vector3
+    public partial class Vector3 : IMarshallable
     {
 
         [StructLayout(LayoutKind.Sequential)]
@@ -102,6 +103,8 @@ namespace ApiWrapper
                 SetZ(_handler, value);
             }
         }
+
+        public object BackingField { get => _vector; set => _vector = (BackingVector) value; }
 
         public Vector3 GetUnitVector()
         {

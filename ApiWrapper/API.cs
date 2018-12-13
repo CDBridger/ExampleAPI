@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApiWrapper.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,8 +28,7 @@ namespace ApiWrapper
             ICollection<Vector3> result = new List<Vector3>();
             IntPtr currentPtr = backingVecs;
 
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 var backingVecItem = Marshal.PtrToStructure<Vector3.BackingVector>(currentPtr);
                 currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<Vector3.BackingVector>());
                 var vecItem = new Vector3(backingVecItem);
@@ -40,17 +40,8 @@ namespace ApiWrapper
         public void SendVectorCollection(ICollection<Vector3> vecs)
         {
             Console.WriteLine("Trying  to send -----------------------------------");
-            var sending = vecs.Select(v => { Console.WriteLine(v); return v.GetBackingVector(); }).ToArray();
-
-            var sendingSize = Marshal.SizeOf<Vector3.BackingVector>() * vecs.Count;
-            IntPtr ptr = Marshal.AllocHGlobal(sendingSize);
-
-            for (int i = 0; i < vecs.Count; i++)
-            {
-                IntPtr itemPtr = IntPtr.Add(ptr, (Marshal.SizeOf<Vector3.BackingVector>() * i));
-                Marshal.StructureToPtr(sending[i], itemPtr, false);
-            }
-            PassInVectors(_handler, ptr, vecs.Count);
+            var values = Interop.MakeUnmanagedArray(vecs);
+            PassInVectors(_handler, values.FirstElement, values.Size);
 
         }
 
