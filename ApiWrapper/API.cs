@@ -23,14 +23,14 @@ namespace ApiWrapper
         {
             IntPtr backingVecs;
             int size;
-            backingVecs = GetVectors(_handler,  out size);
+            backingVecs = GetVectors(_handler, out size);
             ICollection<Vector3> result = new List<Vector3>();
             IntPtr currentPtr = backingVecs;
 
             for (int i = 0; i < size; i++)
             {
                 var backingVecItem = Marshal.PtrToStructure<Vector3.BackingVector>(currentPtr);
-                currentPtr = IntPtr.Add(backingVecs, Marshal.SizeOf<Vector3.BackingVector>());
+                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<Vector3.BackingVector>());
                 var vecItem = new Vector3(backingVecItem);
                 result.Add(vecItem);
             }
@@ -42,23 +42,15 @@ namespace ApiWrapper
             Console.WriteLine("Trying  to send -----------------------------------");
             var sending = vecs.Select(v => { Console.WriteLine(v); return v.GetBackingVector(); }).ToArray();
 
-            
-
             var sendingSize = Marshal.SizeOf<Vector3.BackingVector>() * vecs.Count;
             IntPtr ptr = Marshal.AllocHGlobal(sendingSize);
-            IntPtr start = new IntPtr(ptr.ToInt64());
-            Marshal.StructureToPtr(sending[0], ptr, false);
-            for (int i = 1; i < vecs.Count; i++)
-            {
-                Console.WriteLine(i);
-                ptr = new IntPtr(ptr.ToInt64() + Marshal.SizeOf<Vector3.BackingVector>());
-                Marshal.StructureToPtr(sending[i], ptr, false);
-            }
-            //Marshal.StructureToPtr(sending[0], ptr, false);
-            PassInVectors(_handler, start, vecs.Count);
 
-            
-            //PassInVectors
+            for (int i = 0; i < vecs.Count; i++)
+            {
+                IntPtr itemPtr = IntPtr.Add(ptr, (Marshal.SizeOf<Vector3.BackingVector>() * i));
+                Marshal.StructureToPtr(sending[i], itemPtr, false);
+            }
+            PassInVectors(_handler, ptr, vecs.Count);
 
         }
 

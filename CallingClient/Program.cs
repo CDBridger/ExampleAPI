@@ -32,6 +32,7 @@ namespace CallingClient
             sendingCollection.Add(new Vector3(5, 5, 5));
             sendingCollection.Add(new Vector3(6, 6, 6));
             sendingCollection.Add(new Vector3(7, 7, 7));
+            sendingCollection.Add(new Vector3(8, 8, 8));
             api.SendVectorCollection(sendingCollection);
 
             Console.WriteLine("Retrieving Sent :");
