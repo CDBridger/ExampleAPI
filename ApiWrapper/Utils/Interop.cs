@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -31,6 +31,21 @@ namespace ApiWrapper.Utils
                 FirstElement = ptr,
                 Size = collection.Count()
             };
+        }
+
+        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr firstElement, int Size) where T : IMarshallable<K>, new ()
+        {
+            ICollection<T> result = new List<T>();
+            var currentPtr = firstElement;
+            for (int i = 0; i < Size; i++) {
+                var backingField = Marshal.PtrToStructure<K>(currentPtr);
+                firstElement = IntPtr.Add(currentPtr, Marshal.SizeOf<K>() * i);
+                T val = new T {
+                    BackingField = backingField
+                };
+                result.Add(val);
+            }
+            return result;
         }
     }
 }

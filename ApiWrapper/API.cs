@@ -24,16 +24,7 @@ namespace ApiWrapper
         {
             IntPtr backingVecs;
             backingVecs = GetVectors(_handler, out int size);
-            ICollection<Vector3> result = new List<Vector3>();
-            var currentPtr = backingVecs;
-
-            for (int i = 0; i < size; i++) {
-                var backingVecItem = Marshal.PtrToStructure<BackingVector>(currentPtr);
-                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<BackingVector>());
-                var vecItem = new Vector3(backingVecItem);
-                result.Add(vecItem);
-            }
-            return result;
+            return Interop.GetUnmanagedArray<Vector3, BackingVector>(backingVecs, size);
         }
 
         public void SendVectorCollection(ICollection<Vector3> vecs)

@@ -18,17 +18,18 @@ namespace ApiWrapper
     public partial class Vector3 : IMarshallable<BackingVector>
     {
 
-       
+
         private IntPtr _handler;
         private BackingVector _vector;
 
         public Vector3()
         {
             _vector = new BackingVector();
+            _handler = CreateVector3();
             Init();
 
-            _handler = CreateVector3();
         }
+
 
         public Vector3(float x, float y, float z)
         {
@@ -37,9 +38,15 @@ namespace ApiWrapper
             Init();
         }
 
-        internal Vector3(BackingVector vec)
+        public Vector3(BackingVector vec)
         {
             _vector = vec;
+            _handler = CreateVector3Args(vec._x, vec._y, vec._z);
+        }
+
+        private void UpdateHandler(BackingVector vec)
+        {
+            DeleteVector3(_handler);
             _handler = CreateVector3Args(vec._x, vec._y, vec._z);
         }
 
@@ -60,7 +67,7 @@ namespace ApiWrapper
             return _vector;
         }
 
-        private void Init()
+        public void Init()
         {
             _vector._x = GetX(_handler);
             _vector._y = GetY(_handler);
@@ -105,7 +112,15 @@ namespace ApiWrapper
             }
         }
 
-        public BackingVector BackingField { get => _vector; set => _vector = (BackingVector) value; }
+        public BackingVector BackingField
+        {
+            get => _vector;
+            set
+            {
+                _vector = value;
+                UpdateHandler(value);
+            }
+        }
 
         public Vector3 GetUnitVector()
         {
