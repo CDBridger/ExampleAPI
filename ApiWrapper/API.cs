@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace ApiWrapper
 {
-    public unsafe partial class API
+    public partial class API
     {
         private IntPtr _handler;
 
@@ -38,37 +38,28 @@ namespace ApiWrapper
 
         public void SendVectorCollection(ICollection<Vector3> vecs)
         {
-            var sending = vecs.Select(v => v.GetBackingVector()).ToArray();
-            IntPtr VecArrayPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Vector3.BackingVector)) * vecs.Count);
-            var VecsPtr = new Stack<IntPtr>();
+            Console.WriteLine("Trying  to send -----------------------------------");
+            var sending = vecs.Select(v => { Console.WriteLine(v); return v.GetBackingVector(); }).ToArray();
 
-            try
+            
+
+            //var sendingSize = Marshal.SizeOf<Vector3.BackingVector>() * vecs.Count;
+
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<Vector3.BackingVector>() * vecs.Count);
+
+            Marshal.StructureToPtr(sending[0], ptr, false);
+            for (int i = 1; i < vecs.Count; i++)
             {
-                Vector3.BackingVector** pArray = (Vector3.BackingVector**)VecArrayPtr.ToPointer();
-
-                for (var i = 0; i < sending.Length; i++)
-                {
-                    var vecItem = Marshal.AllocHGlobal(sizeof(Vector3.BackingVector));
-                    
-
-                    Marshal.StructureToPtr<Vector3.BackingVector>(sending[i], vecItem, false);
-                    VecsPtr.Push(vecItem);
-
-                    pArray[i] = (Vector3.BackingVector*)vecItem.ToPointer();
-                }
-
-                PassInVectors(_handler, VecArrayPtr, vecs.Count);
+                Console.WriteLine(i);
+                IntPtr itemPtr = IntPtr.Add(ptr,Marshal.SizeOf<Vector3.BackingVector>());
+                Marshal.StructureToPtr(sending[i], itemPtr, false);
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine("Failed to send collection");
-            }
-            finally
-            {
-                IntPtr vecPtr;
-                while (VecsPtr.Count > 0 && (vecPtr = VecsPtr.Pop()) != IntPtr.Zero) Marshal.FreeHGlobal(vecPtr);
-                Marshal.FreeHGlobal(VecArrayPtr);
-            }
+            //Marshal.StructureToPtr(sending[0], ptr, false);
+            PassInVectors(_handler, ptr, vecs.Count);
+
+            
+            //PassInVectors
+
         }
 
 

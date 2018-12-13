@@ -36,9 +36,9 @@ MYAPI void DeleteExample(ExampleAPI * handler)
 	handler->~ExampleAPI();
 }
 
-MYAPI void PassInVectors(ExampleAPI * handler, Vector3C * vecs, int len)
+MYAPI void PassInVectors(ExampleAPI * handler, Vector3C * ptr, int len)
 {
-	std::vector<Vector3C> retrieved(vecs, vecs + len);
+	std::vector<Vector3C> retrieved(ptr, ptr + len);
 	//std::vector<Vector3C> vectors;
 	//vectors.resize(retrieved.size());
 	//std::transform(retrieved.begin(), retrieved.end(), vectors.begin(), [](Vector3 v) {return Vector3C(v);});

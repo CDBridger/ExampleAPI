@@ -30,8 +30,8 @@ namespace CallingClient
             }
             var sendingCollection = new List<Vector3>();
             sendingCollection.Add(new Vector3(5, 5, 5));
-            sendingCollection.Add(new Vector3(5, 10, 5));
-            sendingCollection.Add(new Vector3(5, 5, 5));
+            sendingCollection.Add(new Vector3(6, 6, 6));
+            sendingCollection.Add(new Vector3(7, 7, 7));
             api.SendVectorCollection(sendingCollection);
 
             Console.WriteLine("Retrieving Sent :");

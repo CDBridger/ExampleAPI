@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ApiWrapper
 {
@@ -25,6 +23,8 @@ namespace ApiWrapper
         public Vector3()
         {
             _vector = new BackingVector();
+            Init();
+
             _handler = CreateVector3();
         }
 
@@ -32,6 +32,7 @@ namespace ApiWrapper
         {
             _vector = new BackingVector();
             _handler = CreateVector3Args(x, y, z);
+            Init();
         }
 
         internal Vector3(BackingVector vec)
@@ -44,6 +45,7 @@ namespace ApiWrapper
         {
             _vector = new BackingVector();
             _handler = other;
+            Init();
         }
 
         ~Vector3()
@@ -54,6 +56,13 @@ namespace ApiWrapper
         internal BackingVector GetBackingVector()
         {
             return _vector;
+        }
+
+        private void Init()
+        {
+            _vector._x = GetX(_handler);
+            _vector._y = GetY(_handler);
+            _vector._z = GetZ(_handler);
         }
 
 
