@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -17,11 +17,11 @@ namespace ApiWrapper.Utils
         {
             var sending = collection.Select(s => s.BackingField).ToArray();
 
-            var sendingSize = Marshal.SizeOf<Vector3.BackingVector>() * collection.Count();
-            IntPtr ptr = Marshal.AllocHGlobal(sendingSize);
+            var sendingSize = Marshal.SizeOf(sending.First()) * collection.Count();
+            var ptr = Marshal.AllocHGlobal(sendingSize);
 
             for (int i = 0; i < collection.Count(); i++) {
-                IntPtr itemPtr = IntPtr.Add(ptr, (Marshal.SizeOf<Vector3.BackingVector>() * i));
+                IntPtr itemPtr = IntPtr.Add(ptr, (Marshal.SizeOf(sending.First()) * i));
                 Marshal.StructureToPtr(sending[i], itemPtr, false);
             }
             return new PtrBundle {
