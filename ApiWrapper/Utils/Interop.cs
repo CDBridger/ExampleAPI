@@ -20,10 +20,13 @@ namespace ApiWrapper.Utils
             var sendingSize = Marshal.SizeOf(sending.First()) * collection.Count();
             var ptr = Marshal.AllocHGlobal(sendingSize);
 
-            for (int i = 0; i < collection.Count(); i++) {
-                IntPtr itemPtr = IntPtr.Add(ptr, (Marshal.SizeOf(sending.First()) * i));
-                Marshal.StructureToPtr(sending[i], itemPtr, false);
+            int i = 0;
+            foreach (var item in sending) {
+                IntPtr itemPtr = IntPtr.Add(ptr, (Marshal.SizeOf(item) * i));
+                Marshal.StructureToPtr(item, itemPtr, false);
+                i++;
             }
+
             return new PtrBundle {
                 FirstElement = ptr,
                 Size = collection.Count()

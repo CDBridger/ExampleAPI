@@ -23,10 +23,9 @@ namespace ApiWrapper
         public ICollection<Vector3> GetVectorCollection()
         {
             IntPtr backingVecs;
-            int size;
-            backingVecs = GetVectors(_handler, out size);
+            backingVecs = GetVectors(_handler, out int size);
             ICollection<Vector3> result = new List<Vector3>();
-            IntPtr currentPtr = backingVecs;
+            var currentPtr = backingVecs;
 
             for (int i = 0; i < size; i++) {
                 var backingVecItem = Marshal.PtrToStructure<Vector3.BackingVector>(currentPtr);
