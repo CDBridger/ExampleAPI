@@ -42,11 +42,20 @@ namespace ApiWrapper.Utils
             };
         }
 
-        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr firstElement, int Size) where T : IMarshallable<K>, new ()
+        /// <summary>
+        /// Get an array from unmanged memory and UnMarshall the values to a managed collection. Items in the collection require a 
+        /// backing field which has the correctly Marshalled primitive values. Therefore
+        /// an interface has been enforced that all items must follow, see <see cref="IMarshallable{K}"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type that will be returned in the collection, must have the backing field of type K</typeparam>
+        /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
+        /// <param name="bundle">A pointer bundle which points to the memory address of the unmanaged code and the size of the array</param>
+        /// <returns>A collection populated with new instances of the managed types pointing their handlers to unmanaged memory</returns>
+        public static ICollection<T> GetUnmanagedArray<T, K>(PtrBundle bundle) where T : IMarshallable<K>, new ()
         {
             ICollection<T> result = new List<T>();
-            var currentPtr = firstElement;
-            for (int i = 0; i < Size; i++) {
+            var currentPtr = bundle.FirstElement;
+            for (int i = 0; i < bundle.Size; i++) {
                 var backingField = Marshal.PtrToStructure<K>(currentPtr);
                 currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<K>());
                 T val = new T {

@@ -24,7 +24,11 @@ namespace ApiWrapper
         {
             IntPtr backingVecs;
             backingVecs = GetVectors(_handler, out int size);
-            return Interop.GetUnmanagedArray<Vector3, BackingVector>(backingVecs, size);
+            var bundle = new PtrBundle {
+                FirstElement = backingVecs,
+                Size = size
+            };
+            return Interop.GetUnmanagedArray<Vector3, BackingVector>(bundle);
         }
 
         public void SendVectorCollection(ICollection<Vector3> vecs)
