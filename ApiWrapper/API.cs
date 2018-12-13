@@ -28,8 +28,8 @@ namespace ApiWrapper
             var currentPtr = backingVecs;
 
             for (int i = 0; i < size; i++) {
-                var backingVecItem = Marshal.PtrToStructure<Vector3.BackingVector>(currentPtr);
-                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<Vector3.BackingVector>());
+                var backingVecItem = Marshal.PtrToStructure<BackingVector>(currentPtr);
+                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<BackingVector>());
                 var vecItem = new Vector3(backingVecItem);
                 result.Add(vecItem);
             }
@@ -39,7 +39,7 @@ namespace ApiWrapper
         public void SendVectorCollection(ICollection<Vector3> vecs)
         {
             Console.WriteLine("Trying  to send -----------------------------------");
-            var values = Interop.MakeUnmanagedArray(vecs);
+            var values = Interop.MakeUnmanagedArray<Vector3, BackingVector>(vecs);
             PassInVectors(_handler, values.FirstElement, values.Size);
 
         }

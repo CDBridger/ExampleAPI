@@ -4,20 +4,21 @@ using System.Runtime.InteropServices;
 
 namespace ApiWrapper
 {
-    public partial class Vector3 : IMarshallable
+    [StructLayout(LayoutKind.Sequential)]
+    public struct BackingVector
+    {
+        [MarshalAs(UnmanagedType.R4)]
+        public float _x;
+        [MarshalAs(UnmanagedType.R4)]
+        public float _y;
+        [MarshalAs(UnmanagedType.R4)]
+        public float _z;
+    }
+
+    public partial class Vector3 : IMarshallable<BackingVector>
     {
 
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct BackingVector
-        {
-            [MarshalAs(UnmanagedType.R4)]
-            public float _x;
-            [MarshalAs(UnmanagedType.R4)]
-            public float _y;
-            [MarshalAs(UnmanagedType.R4)]
-            public float _z;
-        }
-
+       
         private IntPtr _handler;
         private BackingVector _vector;
 
@@ -104,7 +105,7 @@ namespace ApiWrapper
             }
         }
 
-        public object BackingField { get => _vector; set => _vector = (BackingVector) value; }
+        public BackingVector BackingField { get => _vector; set => _vector = (BackingVector) value; }
 
         public Vector3 GetUnitVector()
         {

@@ -13,7 +13,7 @@ namespace ApiWrapper.Utils
 
     public static class Interop
     {
-        public static PtrBundle MakeUnmanagedArray<T>(IEnumerable<T> collection) where T : IMarshallable
+        public static PtrBundle MakeUnmanagedArray<T, K>(IEnumerable<T> collection) where T : IMarshallable<K>
         {
             var sending = collection.Select(s => s.BackingField).ToArray();
 

@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ApiWrapper.Utils
 {
-    public interface IMarshallable
+    public interface IMarshallable<K>
     {
-        object BackingField { get; set; }
+        K BackingField { get; set; }
     }
 }
