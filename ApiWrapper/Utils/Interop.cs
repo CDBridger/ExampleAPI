@@ -39,7 +39,7 @@ namespace ApiWrapper.Utils
             var currentPtr = firstElement;
             for (int i = 0; i < Size; i++) {
                 var backingField = Marshal.PtrToStructure<K>(currentPtr);
-                firstElement = IntPtr.Add(currentPtr, Marshal.SizeOf<K>() * i);
+                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<K>() * i);
                 T val = new T {
                     BackingField = backingField
                 };
