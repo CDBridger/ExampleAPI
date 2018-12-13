@@ -29,5 +29,22 @@ namespace ApiWrapper.Utils
                 Size = collection.Count()
             };
         }
+
+        public static ICollection<T> GetUnmanagedArray<T>(IntPtr collection, int size) where T : IMarshallable, new()
+        {
+            ICollection<T> result = new List<T>();
+            IntPtr currentPtr = collection;
+
+            for (int i = 0; i < size; i++)
+            {
+
+                var vecItem = new T();
+                vecItem.BackingField = Marshal.PtrToStructure(currentPtr, vecItem.BackingFieldType);
+                currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf(vecItem.BackingField));
+                result.Add(vecItem);
+            }
+
+            return result;
+        }
     }
 }

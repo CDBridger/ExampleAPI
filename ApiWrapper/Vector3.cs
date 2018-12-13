@@ -24,9 +24,10 @@ namespace ApiWrapper
         public Vector3()
         {
             _vector = new BackingVector();
-            Init();
 
             _handler = CreateVector3();
+
+            Init();
         }
 
         public Vector3(float x, float y, float z)
@@ -58,6 +59,7 @@ namespace ApiWrapper
         {
             return _vector;
         }
+
 
         private void Init()
         {
@@ -105,6 +107,9 @@ namespace ApiWrapper
         }
 
         public object BackingField { get => _vector; set => _vector = (BackingVector) value; }
+
+        public Type BackingFieldType => typeof(BackingVector);
+
 
         public Vector3 GetUnitVector()
         {

@@ -7,6 +7,7 @@ namespace ApiWrapper.Utils
 {
     public interface IMarshallable
     {
+        Type BackingFieldType { get; }
         object BackingField { get; set; }
     }
 }
