@@ -99,6 +99,7 @@ MYAPI Vector3C * CreateVector3Args(float x, float y, float z)
 
 MYAPI void DeleteVector3(Vector3C * handler)
 {
+	printf("deleting");
 	handler->~Vector3C();
 }
 

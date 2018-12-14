@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ApiWrapper.Utils
 {
@@ -66,6 +67,13 @@ namespace ApiWrapper.Utils
                 result.Add(val);
             }
             return result;
+        }
+
+        public static ICollection<T> GetUnmanagedArray<T, K>(PtrBundle bundle, Task cleanMemory) where T: IMarshallable<K>, new ()
+        {
+            var returnable = GetUnmanagedArray<T, K>(bundle);
+            //cleanMemory.Start();
+            return returnable;
         }
     }
 }
