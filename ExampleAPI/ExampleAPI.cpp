@@ -33,7 +33,7 @@ MYAPI ExampleAPI * CreateExample()
 
 MYAPI void DeleteExample(ExampleAPI * handler)
 {
-	handler->~ExampleAPI();
+	delete handler;
 }
 
 MYAPI void PassInVectors(ExampleAPI * handler, Vector3C * ptr, int len)
@@ -47,7 +47,7 @@ MYAPI void PassInVectors(ExampleAPI * handler, Vector3C * ptr, int len)
 
 MYAPI  Vector3C * GetVectors(ExampleAPI * handler, int * len)
 {
-	//std::vector<Vector3> sending;
+	//std::vector<Vector3> sending;d
 	//sending.resize(vectors.size());
 	//std::transform(vectors.begin(), vectors.end(), sending.begin(), [](Vector3C v) {return v.GetBackingVector();});
 	*len = (*handler->GetVectors()).size();

@@ -28,15 +28,8 @@ namespace ApiWrapper
                 FirstElement = backingVecs,
                 Size = size
             };
-            
-            return Interop.GetUnmanagedArray<Vector3, BackingVector>(bundle, Task.Run(() => {
-                var adr = bundle.FirstElement;
-                Vector3.DeleteVector3(adr);
-                for (int i = 1; i < bundle.Size; i++) {
-                    adr = IntPtr.Add(adr, Marshal.SizeOf<BackingVector>());
-                    Vector3.DeleteVector3(adr);
-                }
-            }));
+
+            return Interop.GetUnmanagedArray<Vector3, BackingVector>(bundle);
         }
 
         public void SendVectorCollection(ICollection<Vector3> vecs)

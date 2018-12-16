@@ -35,7 +35,7 @@ namespace CallingClient
                 sendingCollection.Add(new Vector3(8, 8, 8));
                 api.SendVectorCollection(sendingCollection);
 
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < 100000000; i++) {
                 Console.WriteLine($"Retrieving Sent {i}:");
                 collection = api.GetVectorCollection();
                 foreach (var vec in collection)

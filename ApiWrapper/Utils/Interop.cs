@@ -69,11 +69,5 @@ namespace ApiWrapper.Utils
             return result;
         }
 
-        public static ICollection<T> GetUnmanagedArray<T, K>(PtrBundle bundle, Task cleanMemory) where T: IMarshallable<K>, new ()
-        {
-            var returnable = GetUnmanagedArray<T, K>(bundle);
-            //cleanMemory.Start();
-            return returnable;
-        }
     }
 }
