@@ -11,7 +11,7 @@ namespace ApiWrapper.Utils
     /// primitives as fields. The fields must be decorated with the correct attributes for their
     /// primitive types.
     /// </summary>
-    /// <typeparam name="K">The type definition of the backing feild for this class</typeparam>
+    /// <typeparam name="K">The type definition of the backing field for this class</typeparam>
     public interface IMarshallable<K> where K : struct
     {
         K BackingField { get; set; }
