@@ -9,7 +9,14 @@ namespace ApiWrapper.Utils
     public static class Interop
     {
 
-
+        /// <summary>
+        /// SetApiPattern is a delegate class which defines the method signature for an API call to
+        /// unmanaged memory. This is a function which binds to a "C" style global binding in an 
+        /// unmanaged class.
+        /// </summary>
+        /// <param name="handler">A pointer to an object in unmanaged memory</param>
+        /// <param name="start">A pointer to the first element of the array in unmanaged memory</param>
+        /// <param name="size">The amount of items in the array in unmanaged memory</param>
         public delegate void SetApiPattern(IntPtr handler, IntPtr start, int size);
 
 
@@ -21,8 +28,8 @@ namespace ApiWrapper.Utils
         /// <typeparam name="T">The Type that will be returned in the collection, must have the backing field of type K</typeparam>
         /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
         /// <param name="collection">The collection that will be Marshalled to unmanaged code.</param>
-        /// <param name="handler">The handler which points to a class in unmanged code</param>
-        /// <param name="apiCall">The set API call which points to an externed set method, must follow <see cref="SetApiPattern"/></param>
+        /// <param name="handler">The handler which points to a class in unmanaged code</param>
+        /// <param name="apiCall">The set API call which points to an "extern"ed set method, must follow <see cref="SetApiPattern"/></param>
         public static void MakeUnmanagedArray<T, K>(ICollection<T> collection, IntPtr handler, SetApiPattern apiCall) where T : IMarshallable<K>
         {
             var sending = collection.Select(s => s.BackingField).ToArray();
@@ -40,7 +47,14 @@ namespace ApiWrapper.Utils
             Marshal.FreeHGlobal(ptr);
         }
 
-
+        /// <summary>
+        /// GetAPIPattern is a delegate which should match to an "extern"ed function. This is a
+        /// function which binds to a "C" style global binding in an unmanged class. The method
+        /// signature in should follow the pattern shown below.
+        /// </summary>
+        /// <param name="handler">A pointer to an object in unmanaged memory</param>
+        /// <param name="size">This out variable is used to determine how many items there are in the array</param>
+        /// <returns>An pointer to the first memory address of an item in an array</returns>
         public delegate IntPtr GetApiPattern(IntPtr handler, out int size);
 
         /// <summary>
@@ -56,7 +70,6 @@ namespace ApiWrapper.Utils
         {
             ICollection<T> result = new List<T>();
             var currentPtr = apiCall(handler, out int size);
-            //var currentPtr = bundle.FirstElement;
             for (int i = 0; i < size; i++) {
                 var backingField = Marshal.PtrToStructure<K>(currentPtr);
                 currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<K>());

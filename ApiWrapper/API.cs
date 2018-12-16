@@ -26,7 +26,6 @@ namespace ApiWrapper
             }
             set
             {
-                Interop.MakeUnmanagedArray<>
                 Interop.MakeUnmanagedArray<Vector3, BackingVector>(value, _handler, PassInVectors);
             }
         }
