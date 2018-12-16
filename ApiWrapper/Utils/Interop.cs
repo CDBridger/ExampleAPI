@@ -21,12 +21,13 @@ namespace ApiWrapper.Utils
         /// <typeparam name="T">The Type that will be returned in the collection, must have the backing field of type K</typeparam>
         /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
         /// <param name="collection">The collection that will be Marshalled to unmanaged code.</param>
-        /// <returns>A pointer bundle which points to the memory address of the unmanaged code and the size of the array</returns>
-        public static void MakeUnmanagedArray<T, K>(IEnumerable<T> collection, IntPtr handler, SetApiPattern apiCall) where T : IMarshallable<K>
+        /// <param name="handler">The handler which points to a class in unmanged code</param>
+        /// <param name="apiCall">The set API call which points to an externed set method, must follow <see cref="SetApiPattern"/></param>
+        public static void MakeUnmanagedArray<T, K>(ICollection<T> collection, IntPtr handler, SetApiPattern apiCall) where T : IMarshallable<K>
         {
             var sending = collection.Select(s => s.BackingField).ToArray();
 
-            var sendingSize = Marshal.SizeOf(sending.First()) * collection.Count();
+            var sendingSize = Marshal.SizeOf(sending.First()) * collection.Count;
             var ptr = Marshal.AllocHGlobal(sendingSize);
 
             int i = 0;
@@ -35,7 +36,7 @@ namespace ApiWrapper.Utils
                 Marshal.StructureToPtr(item, itemPtr, false);
                 i++;
             }
-            apiCall(handler, ptr, collection.Count());
+            apiCall(handler, ptr, collection.Count);
             Marshal.FreeHGlobal(ptr);
         }
 
@@ -44,13 +45,13 @@ namespace ApiWrapper.Utils
 
         /// <summary>
         /// Get an array from unmanged memory and UnMarshall the values to a managed collection. Items in the collection require a 
-        /// backing field which has the correctly Marshalled primitive values. Therefore
-        /// an interface has been enforced that all items must follow, see <see cref="IMarshallable{K}"/>.
+        /// backing field which has the correctly Marshalled primitive values. Api Call passed in must follow <see cref="GetApiPattern"/>
         /// </summary>
-        /// <typeparam name="T">The Type that will be returned in the collection, must have the backing field of type K</typeparam>
+        /// <typeparam name="T">The Type that will be returned in the collection, must have the backing field of type <typeparamref name="K"/></typeparam>
         /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
-        /// <param name="bundle">A pointer bundle which points to the memory address of the unmanaged code and the size of the array</param>
-        /// <returns>A collection populated with new instances of the managed types pointing their handlers to unmanaged memory</returns>
+        /// <param name="handler">A pointer to the class that has the array in unmanaged code</param>
+        /// <param name="apiCall">The externed API call which returns the pointer to the start of the array, must follow the <see cref="GetApiPattern"/></param>
+        /// <returns>A copy of the collection from unmanaged memory as the type <typeparamref name="T"/></returns>
         public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr handler, GetApiPattern apiCall) where T : IMarshallable<K>, new ()
         {
             ICollection<T> result = new List<T>();
