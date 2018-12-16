@@ -30,7 +30,7 @@ namespace ApiWrapper.Utils
         /// <param name="collection">The collection that will be Marshalled to unmanaged code.</param>
         /// <param name="handler">The handler which points to a class in unmanaged code</param>
         /// <param name="apiCall">The set API call which points to an "extern"ed set method, must follow <see cref="SetApiPattern"/></param>
-        public static void MakeUnmanagedArray<T, K>(ICollection<T> collection, IntPtr handler, SetApiPattern apiCall) where T : IMarshallable<K>
+        public static void MakeUnmanagedArray<T, K>(ICollection<T> collection, IntPtr handler, SetApiPattern apiCall) where T : IMarshallable<K> where K : struct
         {
             var sending = collection.Select(s => s.BackingField).ToArray();
 
@@ -66,7 +66,7 @@ namespace ApiWrapper.Utils
         /// <param name="handler">A pointer to the class that has the array in unmanaged code</param>
         /// <param name="apiCall">The externed API call which returns the pointer to the start of the array, must follow the <see cref="GetApiPattern"/></param>
         /// <returns>A copy of the collection from unmanaged memory as the type <typeparamref name="T"/></returns>
-        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr handler, GetApiPattern apiCall) where T : IMarshallable<K>, new ()
+        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr handler, GetApiPattern apiCall) where T : IMarshallable<K>, new () where K : struct
         {
             ICollection<T> result = new List<T>();
             var currentPtr = apiCall(handler, out int size);
