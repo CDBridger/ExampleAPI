@@ -29,9 +29,10 @@ namespace CallingClient
             var rnd = new Random();
             for (int i = 0; i < 100000000; i++)
             {
-                sendingCollection = new List<Vector3>();
-                sendingCollection.Add(new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10)));
-                sendingCollection.Add(new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10)));
+                sendingCollection = new List<Vector3> {
+                    new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10)),
+                    new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10))
+                };
                 api.Vectors = sendingCollection;
                 collection = api.Vectors;
                 foreach (var vec in collection)

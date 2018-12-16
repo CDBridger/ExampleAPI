@@ -10,7 +10,7 @@ namespace ApiWrapper.Utils
     {
 
 
-        public delegate void setApiPattern(IntPtr handler, IntPtr start, int size);
+        public delegate void SetApiPattern(IntPtr handler, IntPtr start, int size);
 
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace ApiWrapper.Utils
         /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
         /// <param name="collection">The collection that will be Marshalled to unmanaged code.</param>
         /// <returns>A pointer bundle which points to the memory address of the unmanaged code and the size of the array</returns>
-        public static void MakeUnmanagedArray<T, K>(IEnumerable<T> collection, IntPtr handler, setApiPattern apiCall) where T : IMarshallable<K>
+        public static void MakeUnmanagedArray<T, K>(IEnumerable<T> collection, IntPtr handler, SetApiPattern apiCall) where T : IMarshallable<K>
         {
             var sending = collection.Select(s => s.BackingField).ToArray();
 
@@ -40,7 +40,7 @@ namespace ApiWrapper.Utils
         }
 
 
-        public delegate IntPtr getApiPattern(IntPtr handler, out int size);
+        public delegate IntPtr GetApiPattern(IntPtr handler, out int size);
 
         /// <summary>
         /// Get an array from unmanged memory and UnMarshall the values to a managed collection. Items in the collection require a 
@@ -51,7 +51,7 @@ namespace ApiWrapper.Utils
         /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
         /// <param name="bundle">A pointer bundle which points to the memory address of the unmanaged code and the size of the array</param>
         /// <returns>A collection populated with new instances of the managed types pointing their handlers to unmanaged memory</returns>
-        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr handler, getApiPattern apiCall) where T : IMarshallable<K>, new ()
+        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr handler, GetApiPattern apiCall) where T : IMarshallable<K>, new ()
         {
             ICollection<T> result = new List<T>();
             var currentPtr = apiCall(handler, out int size);
