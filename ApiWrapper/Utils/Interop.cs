@@ -37,7 +37,7 @@ namespace ApiWrapper.Utils
         }
 
 
-        public delegate IntPtr apiPatten(IntPtr start, out int size);
+        public delegate IntPtr apiPattern(IntPtr handler, out int size);
 
         /// <summary>
         /// Get an array from unmanged memory and UnMarshall the values to a managed collection. Items in the collection require a 
@@ -48,7 +48,7 @@ namespace ApiWrapper.Utils
         /// <typeparam name="K">The Type of the backing field, should have Marshalled attributes</typeparam>
         /// <param name="bundle">A pointer bundle which points to the memory address of the unmanaged code and the size of the array</param>
         /// <returns>A collection populated with new instances of the managed types pointing their handlers to unmanaged memory</returns>
-        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr handler, apiPatten apiCall) where T : IMarshallable<K>, new ()
+        public static ICollection<T> GetUnmanagedArray<T, K>(IntPtr handler, apiPattern apiCall) where T : IMarshallable<K>, new ()
         {
             ICollection<T> result = new List<T>();
             var currentPtr = apiCall(handler, out int size);
