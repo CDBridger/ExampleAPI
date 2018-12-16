@@ -34,9 +34,7 @@ namespace ApiWrapper
 
         public void SendVectorCollection(ICollection<Vector3> vecs)
         {
-            Console.WriteLine("Trying  to send -----------------------------------");
-            var values = Interop.MakeUnmanagedArray<Vector3, BackingVector>(vecs);
-            PassInVectors(_handler, values.FirstElement, values.Size);
+            Interop.MakeUnmanagedArray<Vector3, BackingVector>(vecs, _handler, PassInVectors);
         }
 
 

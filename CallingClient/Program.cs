@@ -1,18 +1,15 @@
 ﻿using ApiWrapper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CallingClient
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("C++ Vector Class ----------------->");
-            var cppVector = new Vector3(1,2,3);
+            var cppVector = new Vector3(1, 2, 3);
             Console.WriteLine(cppVector);
             cppVector.MakeUnitVector();
             Console.WriteLine(cppVector);
@@ -24,19 +21,18 @@ namespace CallingClient
             var api = new API();
             Console.WriteLine("Inited: ");
             var collection = api.GetVectorCollection();
-            foreach(var vec in collection)
+            foreach (var vec in collection)
             {
                 Console.WriteLine(vec);
             }
-                var sendingCollection = new List<Vector3>();
-                sendingCollection.Add(new Vector3(5, 5, 5));
-                sendingCollection.Add(new Vector3(6, 6, 6));
-                sendingCollection.Add(new Vector3(7, 7, 7));
-                sendingCollection.Add(new Vector3(8, 8, 8));
+            List<Vector3> sendingCollection;
+            var rnd = new Random();
+            for (int i = 0; i < 100000000; i++)
+            {
+                sendingCollection = new List<Vector3>();
+                sendingCollection.Add(new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10)));
+                sendingCollection.Add(new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10)));
                 api.SendVectorCollection(sendingCollection);
-
-            for (int i = 0; i < 100000000; i++) {
-                Console.WriteLine($"Retrieving Sent {i}:");
                 collection = api.GetVectorCollection();
                 foreach (var vec in collection)
                 {

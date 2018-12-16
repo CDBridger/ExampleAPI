@@ -43,6 +43,13 @@ namespace ApiWrapper.Utils
             };
         }
 
+        public static void MakeUnmanagedArray<T, K>(IEnumerable<T> collection, IntPtr handler, Action<IntPtr, IntPtr, int> apiCall) where T : IMarshallable<K>
+        {
+            var ptrBundle = MakeUnmanagedArray<T, K>(collection);
+            apiCall(handler, ptrBundle.FirstElement, ptrBundle.Size);
+            Marshal.FreeHGlobal(ptrBundle.FirstElement);
+        }
+
         /// <summary>
         /// Get an array from unmanged memory and UnMarshall the values to a managed collection. Items in the collection require a 
         /// backing field which has the correctly Marshalled primitive values. Therefore
