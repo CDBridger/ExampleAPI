@@ -1,8 +1,8 @@
 ﻿using ApiWrapper.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ApiWrapper
 {
@@ -28,6 +28,7 @@ namespace ApiWrapper
                 FirstElement = backingVecs,
                 Size = size
             };
+
             return Interop.GetUnmanagedArray<Vector3, BackingVector>(bundle);
         }
 
@@ -36,7 +37,6 @@ namespace ApiWrapper
             Console.WriteLine("Trying  to send -----------------------------------");
             var values = Interop.MakeUnmanagedArray<Vector3, BackingVector>(vecs);
             PassInVectors(_handler, values.FirstElement, values.Size);
-
         }
 
 

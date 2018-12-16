@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ApiWrapper.Utils
 {
@@ -57,6 +58,8 @@ namespace ApiWrapper.Utils
             var currentPtr = bundle.FirstElement;
             for (int i = 0; i < bundle.Size; i++) {
                 var backingField = Marshal.PtrToStructure<K>(currentPtr);
+                //TODO: CurrentPtr needs to be passed back to unmanaged code to be deleted
+                //https://stackoverflow.com/questions/497133/do-i-need-to-delete-structures-marshaled-via-marshal-ptrtostructure-in-unmanaged#497293
                 currentPtr = IntPtr.Add(currentPtr, Marshal.SizeOf<K>());
                 T val = new T {
                     BackingField = backingField
@@ -65,5 +68,6 @@ namespace ApiWrapper.Utils
             }
             return result;
         }
+
     }
 }

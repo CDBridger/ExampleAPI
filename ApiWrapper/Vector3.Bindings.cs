@@ -10,7 +10,7 @@ namespace ApiWrapper
         [DllImport("ExampleAPI", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr CreateVector3();
         [DllImport("ExampleAPI", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void DeleteVector3(IntPtr handler);
+        public static extern void DeleteVector3(IntPtr handler);
         [DllImport("ExampleAPI", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr CreateVector3Args(float x, float y, float z);
         [DllImport("ExampleAPI", CallingConvention = CallingConvention.Cdecl)]

@@ -28,18 +28,21 @@ namespace CallingClient
             {
                 Console.WriteLine(vec);
             }
-            var sendingCollection = new List<Vector3>();
-            sendingCollection.Add(new Vector3(5, 5, 5));
-            sendingCollection.Add(new Vector3(6, 6, 6));
-            sendingCollection.Add(new Vector3(7, 7, 7));
-            sendingCollection.Add(new Vector3(8, 8, 8));
-            api.SendVectorCollection(sendingCollection);
+                var sendingCollection = new List<Vector3>();
+                sendingCollection.Add(new Vector3(5, 5, 5));
+                sendingCollection.Add(new Vector3(6, 6, 6));
+                sendingCollection.Add(new Vector3(7, 7, 7));
+                sendingCollection.Add(new Vector3(8, 8, 8));
+                api.SendVectorCollection(sendingCollection);
 
-            Console.WriteLine("Retrieving Sent :");
-            collection = api.GetVectorCollection();
-            foreach (var vec in collection)
-            {
-                Console.WriteLine(vec);
+            for (int i = 0; i < 100000000; i++) {
+                Console.WriteLine($"Retrieving Sent {i}:");
+                collection = api.GetVectorCollection();
+                foreach (var vec in collection)
+                {
+                    Console.WriteLine(vec);
+                }
+
             }
 
             Console.ReadKey();
