@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace ApiWrapper.Utils
 {
-    public struct PtrBundle
-    {
-        public IntPtr FirstElement { get; internal set; }
-        public int Size { get; internal set; }
-    }
-
     public static class Interop
     {
 
