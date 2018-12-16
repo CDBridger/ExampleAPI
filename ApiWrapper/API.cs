@@ -1,8 +1,6 @@
 ﻿using ApiWrapper.Utils;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace ApiWrapper
 {
@@ -20,14 +18,16 @@ namespace ApiWrapper
             DeleteExample(_handler);
         }
 
-        public ICollection<Vector3> GetVectorCollection()
+        public ICollection<Vector3> Vectors
         {
-            return Interop.GetUnmanagedArray<Vector3, BackingVector>(_handler, GetVectors);
-        }
-
-        public void SendVectorCollection(ICollection<Vector3> vecs)
-        {
-            Interop.MakeUnmanagedArray<Vector3, BackingVector>(vecs, _handler, PassInVectors);
+            get
+            {
+                return Interop.GetUnmanagedArray<Vector3, BackingVector>(_handler, GetVectors);
+            }
+            set
+            {
+                Interop.MakeUnmanagedArray<Vector3, BackingVector>(value, _handler, PassInVectors);
+            }
         }
 
 

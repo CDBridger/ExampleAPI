@@ -20,7 +20,7 @@ namespace CallingClient
 
             var api = new API();
             Console.WriteLine("Inited: ");
-            var collection = api.GetVectorCollection();
+            var collection = api.Vectors;
             foreach (var vec in collection)
             {
                 Console.WriteLine(vec);
@@ -32,8 +32,8 @@ namespace CallingClient
                 sendingCollection = new List<Vector3>();
                 sendingCollection.Add(new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10)));
                 sendingCollection.Add(new Vector3(rnd.Next(10), rnd.Next(10), rnd.Next(10)));
-                api.SendVectorCollection(sendingCollection);
-                collection = api.GetVectorCollection();
+                api.Vectors = sendingCollection;
+                collection = api.Vectors;
                 foreach (var vec in collection)
                 {
                     Console.WriteLine(vec);
